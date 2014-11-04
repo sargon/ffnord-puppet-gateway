@@ -1,5 +1,6 @@
 class ffnord::params (
   $router_id, # This hosts router identifier, e.g. 10.35.0.1
+  $router_name, # Common local name, e.g. "ffgc-vpn0"
   $icvpn_as,  # Main AS number of this host, e.g. 65035
               # This number will be used for the main bird configuration
   $wan_devices, # Network devices which are in the wan zone
@@ -8,4 +9,7 @@ class ffnord::params (
   # Default values for ffnord config
   $maintenance = 0, # Shall the maintenance mode be active after installation
 ) {
+  ffnord::resources::ffnord::field{
+    "ROUTER_NAME": value => "${router_name}";
+  }
 }
