@@ -108,7 +108,7 @@ define ffnord::bird6::icvpn (
   ){
 
   include ffnord::bird6
-  include ffnord::resources::meta
+  include ffnord::resources::meta::icvpn
 
   $icvpn_name = $name
 
@@ -133,7 +133,7 @@ define ffnord::bird6::icvpn (
       line => 'include "/etc/bird/bird6.conf.d/icvpn-peers.conf";',
       require => [
         File['/etc/bird/bird6.conf'],
-        Class['ffnord::resources::meta']
+        Class['ffnord::resources::meta::icvpn']
       ],
       notify  => Service['bird6'];
   } 
