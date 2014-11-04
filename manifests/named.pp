@@ -1,6 +1,6 @@
 class ffnord::named () {
 
-  include ffnord::resources::meta
+  include ffnord::resources::meta::icvpn
 
   ffnord::monitor::nrpe::check_command {
     "named":
@@ -22,7 +22,7 @@ class ffnord::named () {
         Package['bind9'],
         File['/etc/bind/named.conf.options'],
         File_line['icvpn-meta'],
-        Class['ffnord::resources::meta']
+        Class['ffnord::resources::meta::icvpn']
       ]
   }
 
