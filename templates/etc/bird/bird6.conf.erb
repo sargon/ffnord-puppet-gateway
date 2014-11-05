@@ -21,7 +21,7 @@ router id <%= @router_id %>;
 # If this router is a icvpn peer then routes from the
 # icvpn will be exchanged directly with the mesh table.
 #              
-# icvpn <-> [mesh] <#> [mesh_ffgc,..] <#> local-peers
+# icvpn <-> [mesh] <#> local-peers
 #             ^--------> [kernel(rtable=42)]
 table mesh;
 table kernel_main;
@@ -30,6 +30,13 @@ table kernel_main;
 function is_ula() {
   return (net ~ [ fc00::/7{48,64} ]);
 };
+
+# Filter routes to directly accessable networks.
+function is_not_direct () {
+    include "/etc/bird/bird6.conf.d/local/*"
+    accept;
+}
+
 
 # don't use kernel's routes for bird, but export bird's 
 # routes to kernel table 42. 
@@ -66,6 +73,7 @@ protocol pipe pipe_kernel_mesh {
   export none;
 };
 
+# copy routes to main table
 protocol pipe pipe_kernel_main_mesh {
   table kernel_main;
   peer table mesh;
@@ -75,7 +83,8 @@ protocol pipe pipe_kernel_main_mesh {
 
 # template for local route exchange via bgp
 template bgp local_mesh {
-  import where is_ula(); # Is that a wise decision?
+  table mesh;
+  import where is_ula() && is_not_direct(); # Is that a wise decision?
   export where source = RTS_BGP;
   gateway direct;
   next hop self;

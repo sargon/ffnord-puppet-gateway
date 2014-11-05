@@ -20,6 +20,12 @@ class ffnord::bird6 (
   }
  
   file {
+    '/etc/bird/bird6.conf.d/local/':
+      ensure => directory,
+      mode => "0755",
+      owner => root,
+      group => root,
+      require => File['/etc/bird/bird6.conf.d/'];
     '/etc/bird/bird6.conf.d/':
       ensure => directory,
       mode => "0755",
