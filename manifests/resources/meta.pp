@@ -55,4 +55,13 @@ class ffnord::resources::meta::icvpn(){
         File['/usr/local/bin/update-icvpn-meta'],
       ];
   }
+
+  exec {
+    'update-meta':
+      command => '/usr/local/bin/update-icvpn-meta',
+      require => [
+        Vcsrepo['/var/lib/icvpn-meta/'],
+        File['/usr/local/bin/update-icvpn-meta'],
+      ];
+  }
 }
