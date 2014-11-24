@@ -27,14 +27,22 @@ table mesh;
 table kernel_main;
 
 # Filter function to check if an IPv6 Route is a ULA.
+# Also checks for correct length, we don't want routes with
+# a prefixlen less than 48 or more than 64.
 function is_ula() {
   return (net ~ [ fc00::/7{48,64} ]);
 };
 
 # Filter routes to directly accessable networks.
 function is_not_direct () {
-    include "/etc/bird/bird6.conf.d/local/*"
-    accept;
+    include "/etc/bird/bird6.conf.d/local/direct_*.inc"
+    return true;
+}
+
+# Filter routes to localy reserved networks.
+function is_not_own_network() {
+    include "/etc/bird/bird6.conf.d/local/network_*.inc"
+    return true;
 }
 
 

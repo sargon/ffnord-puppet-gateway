@@ -5,7 +5,8 @@ define ffnord::mesh(
   $mesh_mac,         # mac address mesh device: 52:54:00:bd:e6:d4
   $mesh_ipv4,        # ipv4 address in cidr notation, e.g. 10.35.0.1/19
   $mesh_ipv6,        # ipv6 address in cidr notation, e.g. fd35:f308:a922::ff00/64
-  $mesh_peerings,    # path to the local peerings description yaml file
+
+  $local_meta_git,   # local peer metadata repository
 
   $fastd_peers_git,  # fastd peers
   $fastd_secret,     # fastd secret
@@ -75,6 +76,7 @@ define ffnord::mesh(
     mesh_peerings => $mesh_peerings,
     site_ipv6_prefix => $mesh_ipv6_prefix,
     site_ipv6_prefixlen => $mesh_ipv6_prefixlen,
+    local_meta_git => $local_meta_git,
     icvpn_as => $mesh_as;
   } -> 
   ffnord::named::mesh { "${mesh_code}":

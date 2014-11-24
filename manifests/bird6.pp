@@ -93,15 +93,41 @@ define ffnord::bird6::mesh (
     notify  => Service['bird6'];
   }
 
-  file { "/etc/bird/bird6.conf.d/${mesh_code}.conf":
-    mode => "0644",
-    content => template("ffnord/etc/bird/bird6.interface.conf.erb"),
-    require => [File['/etc/bird/bird6.conf.d/'],Package['bird6']],
-    notify  => [
-      File_line["bird6-${mesh_code}-include"],
-      Service['bird6']
-    ]
+  file { 
+    "/etc/bird/bird6.conf.d/local/direct_${mesh_code}.inc":
+      owner => "root",
+      group => "root",
+      mode => "0644",
+      content => "if (net ~ [ ${site_ipv6_prefix}/$site_ipv6_prefixlen{48,64} ]) then return false;",
+      require => [
+        File['/etc/bird/bird6.conf.d/local/'],
+        Package['bird6']
+      ],
+      before  => File['/etc/bird/bird6.conf'];
+    "/etc/bird/bird6.conf.d/local/network_${mesh_code}.inc":
+      owner => "root",
+      group => "root",
+      mode => "0644",
+      content => "if (net ~ [ ${site_ipv6_prefix}/48{48,64} ]) then return false;",
+      require => [
+        File['/etc/bird/bird6.conf.d/local/'],
+        Package['bird6']
+      ],
+      before  => File['/etc/bird/bird6.conf'];
+    "/etc/bird/bird6.conf.d/${mesh_code}.conf":
+      mode => "0644",
+      content => template("ffnord/etc/bird/bird6.interface.conf.erb"),
+      require => [
+        File['/etc/bird/bird6.conf.d/'],
+        Package['bird6']
+      ],
+      notify  => [
+        File_line["bird6-${mesh_code}-include"],
+        Service['bird6']
+      ];
   }
+
+  # TODO let meta script`o`matic generate neighbor files
 }
 
 define ffnord::bird6::icvpn (
