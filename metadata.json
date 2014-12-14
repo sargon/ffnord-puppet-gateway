@@ -1,0 +1,23 @@
+{
+  "name": "ffnord",
+  "version": "0.0.0",
+  "author": "FFNord Community",
+  "license": "GPL-3",
+  "summary": "A module to setup and configure a FFNORD Uplink/Gateway Server",
+  "source": "https://github.com/ffnord/ffnord-puppet-gateway",
+  "project_page": "https://github.com/ffnord/ffnord-puppet-gateway",
+  "issues_url": "https://github.com/ffnord/ffnord-puppet-gateway/issues",
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": ["7.7"]
+    }
+  ],
+  "dependencies": [
+    { "name": "puppetlabs/stdlib" },
+    { "name": "puppetlabs/apt" },
+    { "name": "puppetlabs/vcsrepo" },
+    { "name": "saz/sudo" },
+    { "name": "camptocamp/kmod" }
+  ]
+}
