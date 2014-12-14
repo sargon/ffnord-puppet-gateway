@@ -1,5 +1,5 @@
 {
-  "name": "ffnord",
+  "name": "ffnord-system",
   "version": "0.0.0",
   "author": "FFNord Community",
   "license": "GPL-3",
@@ -14,10 +14,9 @@
     }
   ],
   "dependencies": [
-    { "name": "puppetlabs/stdlib" },
-    { "name": "puppetlabs/apt" },
-    { "name": "puppetlabs/vcsrepo" },
-    { "name": "saz/sudo" },
+    { "name": "puppetlabs/stdlib" , "version_requirement": ">=3.2.0 <5.0.0" },
+    { "name": "puppetlabs/apt", "version_requirement": ">= 1.7.0" },
+    { "name": "puppetlabs/vcsrepo", "version_requirement": ">= 1.2.0" },
     { "name": "camptocamp/kmod" }
   ]
 }
