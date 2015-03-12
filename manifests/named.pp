@@ -32,6 +32,9 @@ class ffnord::named () {
       source  => "puppet:///modules/ffnord/etc/bind/named.conf.options",
       require => [Package['bind9']],
       notify  => [Service['bind9']];
+    '/etc/bind/named.conf.allow_query':
+      ensure => file,
+      require => [Package['bind9']];
   }
 
   file_line {
@@ -174,8 +177,9 @@ define ffnord::named::allow (
 
   include ffnord::named
 
-  exec { "${name}_allow":
-    command => "/bin/sed -i -r 's/(allow-query .*)\\}/\\1 ${ip_prefix}\\/${ip_prefixlen};}/' /etc/bind/named.conf.options",
-    require => File['/etc/bind/named.conf.options'];
+  file_line {
+    "${name}_allow":
+      path => '/etc/bind/named.conf.allow_query',
+      line => "${ip_prefix}/${ip_prefixlen}";
   }
 }
